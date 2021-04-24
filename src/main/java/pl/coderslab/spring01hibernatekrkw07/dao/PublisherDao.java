@@ -1,5 +1,6 @@
 package pl.coderslab.spring01hibernatekrkw07.dao;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 import pl.coderslab.spring01hibernatekrkw07.entity.Book;
 import pl.coderslab.spring01hibernatekrkw07.entity.Publisher;
@@ -20,6 +21,13 @@ public class PublisherDao {
 
     public Publisher readById(long id){
         return em.find(Publisher.class, id);
+    }
+
+    public Publisher readByIdWithBooks(long id){
+        Publisher p = readById(id);
+        Hibernate.initialize(p.getBooks());
+
+        return p;
     }
 
     public void update(Publisher e){

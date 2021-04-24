@@ -1,9 +1,8 @@
 package pl.coderslab.spring01hibernatekrkw07.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Publisher {
@@ -11,6 +10,8 @@ public class Publisher {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
+    @OneToMany(mappedBy = "publisher")
+    private List<Book> books = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -23,5 +24,22 @@ public class Publisher {
     public Publisher setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public Publisher setId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    @Override
+    public String toString() {
+        return "Publisher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

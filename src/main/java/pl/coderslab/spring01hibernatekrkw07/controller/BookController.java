@@ -48,6 +48,25 @@ public class BookController {
         return b.toString();
     }
 
+    @GetMapping("/createwp/{title}/{description}/{rating}/{pubId}")
+    @ResponseBody
+    public String createWithPublisher(@PathVariable String title,
+                         @PathVariable String description,
+                         @PathVariable int rating,
+                         @PathVariable long pubId
+    ) {
+        final Publisher p = publisherDao.readById(pubId);
+
+        final Book b = new Book()
+                .setTitle(title)
+                .setDescription(description)
+                .setRating(rating)
+                .setPublisher(p);
+
+        bookDao.create(b);
+        return b.toString();
+    }
+
     @GetMapping("/read/{id}")
     @ResponseBody
     public String read(@PathVariable long id) {
