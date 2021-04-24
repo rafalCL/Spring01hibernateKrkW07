@@ -20,6 +20,8 @@ public class Book {
     private String title;
     private int rating;
     private String description;
+    @ManyToOne
+    private Publisher publisher;
 
     public long getId() {
         return id;
@@ -54,6 +56,15 @@ public class Book {
 
     public Book setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    public Publisher getPublisher() {
+        return publisher;
+    }
+
+    public Book setPublisher(Publisher publisher) {
+        this.publisher = publisher;
         return this;
     }
 
