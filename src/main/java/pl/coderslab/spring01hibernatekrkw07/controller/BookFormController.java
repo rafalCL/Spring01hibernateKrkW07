@@ -45,6 +45,18 @@ public class BookFormController {
         return "redirect:all";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable long id, Model m){
+        m.addAttribute("book", bookDao.readById(id));
+        return "book/form";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String editFormPost(@ModelAttribute Book book){
+        bookDao.update(book);
+        return "redirect:../all";
+    }
+
     @ModelAttribute("publishers")
     public List<Publisher> publishers() {
         return publisherDao.readAll();
