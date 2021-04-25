@@ -7,7 +7,9 @@ import pl.coderslab.spring01hibernatekrkw07.entity.Publisher;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -36,5 +38,10 @@ public class PublisherDao {
 
     public void delete(Publisher e){
         em.remove(em.contains(e) ? e : em.merge(e));
+    }
+
+    public List<Publisher> readAll() {
+        Query q = em.createQuery("SELECT e FROM Publisher e");
+        return q.getResultList();
     }
 }

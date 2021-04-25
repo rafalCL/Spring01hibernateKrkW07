@@ -3,6 +3,7 @@ package pl.coderslab.spring01hibernatekrkw07;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import pl.coderslab.spring01hibernatekrkw07.converter.PublisherConverter;
 
 import javax.persistence.EntityManagerFactory;
 import java.nio.charset.Charset;
@@ -56,5 +58,15 @@ public class AppConfig implements WebMvcConfigurer {
         stringConverter.setSupportedMediaTypes(Arrays.asList(new MediaType("text", "html",
                 Charset.forName("UTF-8"))));
         converters.add(stringConverter);
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(publisherConverter());
+    }
+
+    @Bean
+    public PublisherConverter publisherConverter(){
+        return new PublisherConverter();
     }
 }
