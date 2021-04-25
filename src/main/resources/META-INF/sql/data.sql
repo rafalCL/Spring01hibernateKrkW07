@@ -5,3 +5,5 @@
 --  COLLATE utf8_general_ci;
 --
 -- USE book_store_krk_w_07;
+
+-- INSERT INTO publisher VALUES(default, 'Ossolineum');

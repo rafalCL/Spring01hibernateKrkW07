@@ -5,7 +5,9 @@ import pl.coderslab.spring01hibernatekrkw07.entity.Book;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.List;
 
 // Na podstawie przykładu z prezentacji utwórz klasę BookDao.
 //Klasa ma realizować podstawowe operacje na encji:
@@ -34,5 +36,16 @@ public class BookDao {
 
     public void delete(Book e){
         em.remove(em.contains(e) ? e : em.merge(e));
+    }
+
+    public List<Book> readAll(){
+        Query q = em.createQuery("SELECT e FROM Book e");
+        return q.getResultList();
+    }
+
+    public List<Book> readByRatingGTE(int minimalRating){
+        Query q = em.createQuery("SELECT e FROM Book e WHERE e.rating >= :minRating");
+        q.setParameter("minRating", minimalRating);
+        return q.getResultList();
     }
 }

@@ -1,14 +1,13 @@
 package pl.coderslab.spring01hibernatekrkw07.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import pl.coderslab.spring01hibernatekrkw07.dao.BookDao;
 import pl.coderslab.spring01hibernatekrkw07.dao.PublisherDao;
 import pl.coderslab.spring01hibernatekrkw07.entity.Book;
 import pl.coderslab.spring01hibernatekrkw07.entity.Publisher;
+
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/book")
@@ -113,5 +112,31 @@ public class BookController {
 
         bookDao.create(b);
         return b.toString();
+    }
+
+    @GetMapping("/all")
+    @ResponseBody
+    public String showAll(){
+        final String html = bookDao.readAll()
+                .stream()
+                .map(Book::toString)
+                .collect(Collectors.joining("</div>\r\n<div>","<div>", "</div>"));
+
+        return html;
+    }
+
+    @GetMapping("/byratinggte")
+    @ResponseBody
+    public String showByRatingGTE(@RequestParam(required = false) Integer minRating){
+        if(minRating==null){
+            minRating = 8;
+        }
+
+        final String html = bookDao.readByRatingGTE(minRating)
+                .stream()
+                .map(Book::toString)
+                .collect(Collectors.joining("</div>\r\n<div>","<div>", "</div>"));
+
+        return html;
     }
 }
