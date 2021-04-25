@@ -10,6 +10,8 @@ package pl.coderslab.spring01hibernatekrkw07.entity;
 //Uruchom aplikację, a następnie sprawdź, czy w bazie danych pojawiła się tabela.
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "books")
@@ -22,6 +24,8 @@ public class Book {
     private String description;
     @ManyToOne
     private Publisher publisher;
+    @ManyToMany
+    List<Author> authors = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -68,6 +72,15 @@ public class Book {
         return this;
     }
 
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public Book setAuthors(List<Author> authors) {
+        this.authors = authors;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -75,6 +88,8 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", rating=" + rating +
                 ", description='" + description + '\'' +
+                ", publisher=" + publisher +
+                ", authors=" + authors +
                 '}';
     }
 }

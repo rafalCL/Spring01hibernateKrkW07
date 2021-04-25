@@ -29,6 +29,10 @@
             <form:textarea id="description" path="description"/>
         </div>
         <div>
+            <label for="authors">Authors</label>
+            <form:select id="authors" path="authors" items="${authors}" itemLabel="lastName" itemValue="id"/>
+        </div>
+        <div>
             <label for="publisher">Publisher</label>
             <form:select id="publisher" path="publisher" items="${publishers}" itemLabel="name" itemValue="id"/>
         </div>

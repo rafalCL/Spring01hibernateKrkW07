@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import pl.coderslab.spring01hibernatekrkw07.converter.AuthorConverter;
 import pl.coderslab.spring01hibernatekrkw07.converter.PublisherConverter;
 
 import javax.persistence.EntityManagerFactory;
@@ -63,10 +64,16 @@ public class AppConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(publisherConverter());
+        registry.addConverter(authorConverter());
     }
 
     @Bean
     public PublisherConverter publisherConverter(){
         return new PublisherConverter();
+    }
+
+    @Bean
+    public AuthorConverter authorConverter(){
+        return new AuthorConverter();
     }
 }

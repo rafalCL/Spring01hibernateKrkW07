@@ -3,8 +3,10 @@ package pl.coderslab.spring01hibernatekrkw07.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.spring01hibernatekrkw07.dao.AuthorDao;
 import pl.coderslab.spring01hibernatekrkw07.dao.BookDao;
 import pl.coderslab.spring01hibernatekrkw07.dao.PublisherDao;
+import pl.coderslab.spring01hibernatekrkw07.entity.Author;
 import pl.coderslab.spring01hibernatekrkw07.entity.Book;
 import pl.coderslab.spring01hibernatekrkw07.entity.Publisher;
 
@@ -16,16 +18,18 @@ import java.util.stream.Collectors;
 public class BookFormController {
     private BookDao bookDao;
     private PublisherDao publisherDao;
+    private AuthorDao authorDao;
 
-    public BookFormController(BookDao bookDao, PublisherDao publisherDao) {
+    public BookFormController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao) {
         this.bookDao = bookDao;
         this.publisherDao = publisherDao;
+        this.authorDao = authorDao;
     }
 
     @GetMapping("/all")
     @ResponseBody
     public String showAll(){
-        final String html = bookDao.readAll()
+        final String html = bookDao.readAllWithAuthors()
                 .stream()
                 .map(Book::toString)
                 .collect(Collectors.joining("</div>\r\n<div>","<div>", "</div>"));
@@ -60,5 +64,10 @@ public class BookFormController {
     @ModelAttribute("publishers")
     public List<Publisher> publishers() {
         return publisherDao.readAll();
+    }
+
+    @ModelAttribute("authors")
+    public List<Author> authors() {
+        return authorDao.readAll();
     }
 }

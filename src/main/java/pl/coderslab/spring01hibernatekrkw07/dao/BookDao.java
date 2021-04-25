@@ -43,6 +43,11 @@ public class BookDao {
         return q.getResultList();
     }
 
+    public List<Book> readAllWithAuthors(){
+        Query q = em.createQuery("SELECT DISTINCT e FROM Book e LEFT JOIN FETCH e.authors a");
+        return q.getResultList();
+    }
+
     public List<Book> readByRatingGTE(int minimalRating){
         Query q = em.createQuery("SELECT e FROM Book e WHERE e.rating >= :minRating");
         q.setParameter("minRating", minimalRating);

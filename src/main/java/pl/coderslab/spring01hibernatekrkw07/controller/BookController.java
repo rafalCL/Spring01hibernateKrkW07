@@ -117,7 +117,7 @@ public class BookController {
     @GetMapping("/all")
     @ResponseBody
     public String showAll(){
-        final String html = bookDao.readAll()
+        final String html = bookDao.readAllWithAuthors()
                 .stream()
                 .map(Book::toString)
                 .collect(Collectors.joining("</div>\r\n<div>","<div>", "</div>"));
