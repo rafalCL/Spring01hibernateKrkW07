@@ -1,5 +1,6 @@
 package pl.coderslab.spring01hibernatekrkw07.controller;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,8 +10,12 @@ import pl.coderslab.spring01hibernatekrkw07.dao.BookDao;
 import pl.coderslab.spring01hibernatekrkw07.dao.PublisherDao;
 import pl.coderslab.spring01hibernatekrkw07.entity.Author;
 import pl.coderslab.spring01hibernatekrkw07.entity.Book;
+import pl.coderslab.spring01hibernatekrkw07.entity.Category;
 import pl.coderslab.spring01hibernatekrkw07.entity.Publisher;
+import pl.coderslab.spring01hibernatekrkw07.repository.BookRepository;
+import pl.coderslab.spring01hibernatekrkw07.repository.CategoryRepository;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +24,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/bf")
 public class BookFormController {
     private BookDao bookDao;
+    private BookRepository bookRepository;
     private PublisherDao publisherDao;
     private AuthorDao authorDao;
+    private CategoryRepository categoryRepository;
 
-    public BookFormController(BookDao bookDao, PublisherDao publisherDao, AuthorDao authorDao) {
+    public BookFormController(BookDao bookDao, BookRepository bookRepository, PublisherDao publisherDao, AuthorDao authorDao, CategoryRepository categoryRepository) {
         this.bookDao = bookDao;
+        this.bookRepository = bookRepository;
         this.publisherDao = publisherDao;
         this.authorDao = authorDao;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping("/all")
@@ -67,6 +76,50 @@ public class BookFormController {
         }
         bookDao.update(book);
         return "redirect:../all";
+    }
+
+    @GetMapping("/bycatid/{catId}")
+    @ResponseBody
+    @Transactional
+    public String byCatId(@PathVariable long catId){
+        List<Book> books = bookRepository.findByCategoryId(catId);
+
+        for(Book b : books){
+            Hibernate.initialize(b.getAuthors());
+        }
+
+        return books.toString();
+    }
+
+    @GetMapping("/bycat/{catId}")
+    @ResponseBody
+    @Transactional
+    public String byCat(@PathVariable long catId){
+        Category category = categoryRepository.getOne(catId);
+        if (category==null){
+            return "Nie znaleziono kategorii";
+        }
+
+        List<Book> books = bookRepository.findByCategory(category);
+
+        for(Book b : books){
+            Hibernate.initialize(b.getAuthors());
+        }
+
+        return books.toString();
+    }
+
+    @GetMapping("/bycatname/{catName}")
+    @ResponseBody
+    @Transactional
+    public String byCatId(@PathVariable String catName){
+        List<Book> books = bookRepository.findByCategoryNameIgnoreCase(catName);
+
+        for(Book b : books){
+            Hibernate.initialize(b.getAuthors());
+        }
+
+        return books.toString();
     }
 
     @ModelAttribute("publishers")
