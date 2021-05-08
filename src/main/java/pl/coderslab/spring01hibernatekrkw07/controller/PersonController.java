@@ -58,4 +58,10 @@ public class PersonController {
         personRepository.save(person);
         return person.toString();
     }
+
+    @GetMapping("/bylogin/{login}")
+    @ResponseBody
+    public String findByLogin(@PathVariable String login){
+        return personRepository.findByLogin(login).toString();
+    }
 }
