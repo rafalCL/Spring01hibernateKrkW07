@@ -1,6 +1,7 @@
 package pl.coderslab.spring01hibernatekrkw07.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -2,6 +2,7 @@ package pl.coderslab.spring01hibernatekrkw07.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.spring01hibernatekrkw07.dao.AuthorDao;
 import pl.coderslab.spring01hibernatekrkw07.dao.BookDao;
@@ -10,6 +11,7 @@ import pl.coderslab.spring01hibernatekrkw07.entity.Author;
 import pl.coderslab.spring01hibernatekrkw07.entity.Book;
 import pl.coderslab.spring01hibernatekrkw07.entity.Publisher;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +46,10 @@ public class BookFormController {
     }
 
     @PostMapping("/addform")
-    public String addFormPost(@ModelAttribute Book book){
+    public String addFormPost(@ModelAttribute @Valid Book book, BindingResult violations){
+        if(violations.hasErrors()){
+            return "book/form";
+        }
         bookDao.create(book);
         return "redirect:all";
     }
@@ -56,7 +61,10 @@ public class BookFormController {
     }
 
     @PostMapping("/{id}/edit")
-    public String editFormPost(@ModelAttribute Book book){
+    public String editFormPost(@ModelAttribute @Valid Book book, BindingResult violations){
+        if(violations.hasErrors()){
+            return "book/form";
+        }
         bookDao.update(book);
         return "redirect:../all";
     }
