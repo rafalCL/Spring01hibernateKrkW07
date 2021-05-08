@@ -3,16 +3,28 @@ package pl.coderslab.spring01hibernatekrkw07.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.spring01hibernatekrkw07.dao.PersonDao;
 import pl.coderslab.spring01hibernatekrkw07.entity.Person;
+import pl.coderslab.spring01hibernatekrkw07.repository.PersonRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/person")
 public class PersonController {
-    private PersonDao personDao;
+    private PersonRepository personRepository;
 
-    public PersonController(PersonDao personDao) {
-        this.personDao = personDao;
+    public PersonController(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
+
+    @GetMapping("/list")
+    @ResponseBody
+    public String list() {
+        List<Person> persons = personRepository.findAll();
+        return persons.stream()
+                .map(Person::toString)
+                .collect(Collectors.joining("</div><div>", "<div>", "</div>"));
     }
 
     @GetMapping("/addform")
@@ -29,7 +41,7 @@ public class PersonController {
                 .setLogin(login)
                 .setEmail(email)
                 .setPassword(password);
-        personDao.create(person);
+        personRepository.save(person);
         return person.toString();
     }
 
@@ -43,7 +55,7 @@ public class PersonController {
     @PostMapping("/addformbind")
     @ResponseBody
     public String addFormBindPost(@ModelAttribute Person person){
-        personDao.create(person);
+        personRepository.save(person);
         return person.toString();
     }
 }
