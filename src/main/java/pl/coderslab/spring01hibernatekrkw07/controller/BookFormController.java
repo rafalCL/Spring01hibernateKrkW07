@@ -18,6 +18,7 @@ import pl.coderslab.spring01hibernatekrkw07.repository.CategoryRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -95,12 +96,12 @@ public class BookFormController {
     @ResponseBody
     @Transactional
     public String byCat(@PathVariable long catId){
-        Category category = categoryRepository.getOne(catId);
-        if (category==null){
+        Optional<Category> category = categoryRepository.findById(catId);
+        if (category.isEmpty()){
             return "Nie znaleziono kategorii";
         }
 
-        List<Book> books = bookRepository.findByCategory(category);
+        List<Book> books = bookRepository.findByCategory(category.get());
 
         for(Book b : books){
             Hibernate.initialize(b.getAuthors());
