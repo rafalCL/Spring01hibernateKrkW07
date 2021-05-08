@@ -56,7 +56,7 @@ public class BookFormController {
 
     @GetMapping("/{id}/edit")
     public String editForm(@PathVariable long id, Model m){
-        m.addAttribute("book", bookDao.readById(id));
+        m.addAttribute("book", bookDao.readWithAuthorsById(id));
         return "book/form";
     }
 

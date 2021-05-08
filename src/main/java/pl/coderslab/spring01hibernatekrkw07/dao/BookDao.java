@@ -53,4 +53,11 @@ public class BookDao {
         q.setParameter("minRating", minimalRating);
         return q.getResultList();
     }
+
+    public Book readWithAuthorsById(long id) {
+        Query q = em.createQuery("SELECT e FROM Book e JOIN FETCH e.authors WHERE e.id = :id");
+        q.setParameter("id", id);
+
+        return (Book)q.getSingleResult();
+    }
 }
