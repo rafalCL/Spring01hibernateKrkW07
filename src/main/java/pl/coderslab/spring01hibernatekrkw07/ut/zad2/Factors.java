@@ -10,10 +10,22 @@ package pl.coderslab.spring01hibernatekrkw07.ut.zad2;
 //po napisaniu kodu
 //po refaktoryzacji
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Factors {
     public static List<Integer> generatePrimeFactors(int n) {
-        return null;
+        List<Integer> result = new ArrayList<>();
+        result.add(1);
+
+        for (int i = 2; i <= n / 2; i++) {
+            if (n % i == 0) {
+                result.add(i);
+            }
+        }
+
+        result.add(n);
+
+        return result;
     }
 }
