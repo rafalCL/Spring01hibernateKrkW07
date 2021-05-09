@@ -22,4 +22,10 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     //metodę wyszukującą książki dla zadanej kategorii
     @Query("SELECT e FROM Book e WHERE e.category = ?1")
     List<Book> queryByCategory(Category category);
+
+    @Query(value = "SELECT * FROM books WHERE category_id = ?1 ORDER BY title LIMIT 1", nativeQuery = true)
+    Book queryFirstInCategory(long catId);
+
+    @Query(value = "SELECT id, title FROM books WHERE id = ?1", nativeQuery = true)
+    List<Object[]> queryPart(long id);
 }

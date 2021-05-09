@@ -17,6 +17,7 @@ import pl.coderslab.spring01hibernatekrkw07.repository.CategoryRepository;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -152,6 +153,27 @@ public class BookFormController {
         }
 
         return books.toString();
+    }
+
+    @GetMapping("/queryonebycatid/{catId}")
+    @ResponseBody
+    @Transactional
+    public String queryOneByCatId(@PathVariable long catId){
+        Book book = bookRepository.queryFirstInCategory(catId);
+        Hibernate.initialize(book.getAuthors());
+
+        return book.toString();
+    }
+
+    @GetMapping("/queryid/{id}")
+    @ResponseBody
+    @Transactional
+    public String queryId(@PathVariable long id){
+        List<Object[]> book = bookRepository.queryPart(id);
+        BigInteger iddb = (BigInteger)book.get(0)[0];
+        String title = (String)book.get(0)[1];
+
+        return iddb+" : "+title;
     }
 
     @ModelAttribute("publishers")
