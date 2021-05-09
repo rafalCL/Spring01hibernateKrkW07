@@ -1,6 +1,7 @@
 package pl.coderslab.spring01hibernatekrkw07.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import pl.coderslab.spring01hibernatekrkw07.entity.Book;
 import pl.coderslab.spring01hibernatekrkw07.entity.Category;
 
@@ -14,4 +15,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findByCategoryNameIgnoreCase(String catName);
     //metodę wyszukującą książki dla zadanego id kategorii
     List<Book> findByCategoryId(long catId);
+
+    // metodę wyszukującą książki dla zadanego tytułu.
+    @Query("SELECT e FROM Book e WHERE e.title = ?1")
+    List<Book> queryByTitle(String title);
+    //metodę wyszukującą książki dla zadanej kategorii
+    @Query("SELECT e FROM Book e WHERE e.category = ?1")
+    List<Book> queryByCategory(Category category);
 }

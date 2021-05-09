@@ -123,6 +123,37 @@ public class BookFormController {
         return books.toString();
     }
 
+    @GetMapping("/querybycat/{catId}")
+    @ResponseBody
+    @Transactional
+    public String queryByCat(@PathVariable long catId){
+        Optional<Category> category = categoryRepository.findById(catId);
+        if (category.isEmpty()){
+            return "Nie znaleziono kategorii";
+        }
+
+        List<Book> books = bookRepository.queryByCategory(category.get());
+
+        for(Book b : books){
+            Hibernate.initialize(b.getAuthors());
+        }
+
+        return books.toString();
+    }
+
+    @GetMapping("/querybytitle/{title}")
+    @ResponseBody
+    @Transactional
+    public String queryByTitle(@PathVariable String title){
+        List<Book> books = bookRepository.queryByTitle(title);
+
+        for(Book b : books){
+            Hibernate.initialize(b.getAuthors());
+        }
+
+        return books.toString();
+    }
+
     @ModelAttribute("publishers")
     public List<Publisher> publishers() {
         return publisherDao.readAll();
